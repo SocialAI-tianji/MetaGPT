@@ -87,11 +87,9 @@ class Config(metaclass=Singleton):
     def get_default_llm_provider_enum(self) -> LLMProviderEnum:
         """Get first valid LLM provider enum"""
         mappings = {
-            LLMProviderEnum.OPENAI: bool(
-                self._is_valid_llm_key(self.OPENAI_API_KEY) and not self.OPENAI_API_TYPE and self.OPENAI_API_MODEL
-            ),
-            LLMProviderEnum.ANTHROPIC: self._is_valid_llm_key(self.ANTHROPIC_API_KEY),
             LLMProviderEnum.ZHIPUAI: self._is_valid_llm_key(self.ZHIPUAI_API_KEY),
+            LLMProviderEnum.OPENAI: bool(self._is_valid_llm_key(self.OPENAI_API_KEY) and not self.OPENAI_API_TYPE and self.OPENAI_API_MODEL),
+            LLMProviderEnum.ANTHROPIC: self._is_valid_llm_key(self.ANTHROPIC_API_KEY),
             LLMProviderEnum.FIREWORKS: self._is_valid_llm_key(self.FIREWORKS_API_KEY),
             LLMProviderEnum.OPEN_LLM: self._is_valid_llm_key(self.OPEN_LLM_API_BASE),
             LLMProviderEnum.GEMINI: self._is_valid_llm_key(self.GEMINI_API_KEY),
@@ -129,6 +127,7 @@ class Config(metaclass=Singleton):
     def get_model_name(self, provider=None) -> str:
         provider = provider or self.get_default_llm_provider_enum()
         model_mappings = {
+            LLMProviderEnum.ZHIPUAI: self.ZHIPUAI_API_MODEL,
             LLMProviderEnum.OPENAI: self.OPENAI_API_MODEL,
             LLMProviderEnum.AZURE_OPENAI: self.DEPLOYMENT_NAME,
         }
